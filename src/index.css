@@ -572,8 +572,20 @@ img:hover{
 
 .form-group {
   margin-bottom: 20px;
+  
 }
-
+.form-group button{
+  margin: 0 10px;
+}
+.form-group button:nth-child(2){
+  background: #FF0000;
+  color: whitesmoke;
+}
+.form-group button:hover:nth-child(2){
+  background: whitesmoke;
+  box-shadow: inset 0px 0px 1px red;
+  color: #FF0000;
+}
 .form-group label {
   display: block;
   margin-bottom: 5px;
