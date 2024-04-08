@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable no-undef */
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios'
 import { formatTimestamp, getInitials } from '../utils';
+import ProtectedRoute from './protectedRoutes';
 
 
 function Blog() {
@@ -10,6 +12,8 @@ function Blog() {
     const [blogs, setBlogs] = useState([]);
     const [error, setError] = useState(null);
     const [blog, setBlog] = useState(null);
+    const fileInputRef = useRef(null); // Ref to file input element
+
     const [blogFormData, setBlogFormData] = useState({
         blogTitle: '',
         blogImage: null,
@@ -20,11 +24,21 @@ function Blog() {
     const closePopup = () => {
         setBlog(null);
     };
+    const handleReset = () => {
+        setBlogFormData({
+            blogTitle: '',
+            blogImage: null,
+            blogBody: '',
+            blogId: ''
+        });
+        fileInputRef.current.value = '';
+    };
+
 
     const logout = () => {
         localStorage.removeItem('token');
         setToken(null);
-        window.location.href = '/auth/login';
+        window.location.reload()
     };
 
     const showImagePreview = (imageUrl) => {
@@ -48,6 +62,7 @@ function Blog() {
     };
 
     const addBlog = async () => {
+        event.preventDefault()
         if (!blogFormData.blogTitle || !blogFormData.blogBody) {
             showToast('Incomplete blog details.');
             return;
@@ -60,12 +75,15 @@ function Blog() {
         formData.append('blogImage', blogFormData.blogImage);
         formData.append('blogBody', blogFormData.blogBody);
 
-        let url = 'https://my-brand-backend-vq8n.onrender.com/blog';
+        let url = `${import.meta.env.VITE_APP_BASE_URL_LOCAL}/blog`;
         let method = 'POST';
 
         if (blogFormData.blogId) {
             url += `/update/${blogFormData.blogId}`;
             method = 'PUT';
+        } else {
+            url += `/create`;
+
         }
 
         await axios({
@@ -84,9 +102,11 @@ function Blog() {
                 blogBody: '',
                 blogId: ''
             });
+            // Reset file input value
+            fileInputRef.current.value = '';
         })
             .catch(error => {
-                showToast(error.response.data.error);
+                showToast(error?.response?.data?.error);
             })
             .finally(() => setLoading(false));
     };
@@ -94,7 +114,7 @@ function Blog() {
     const deleteBlog = async (blogId) => {
         setLoading(true);
 
-        await axios.delete(`https://my-brand-backend-vq8n.onrender.com/blog/delete/${blogId}`, {
+        await axios.delete(`${import.meta.env.VITE_APP_BASE_URL_LOCAL}/blog/delete/${blogId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -114,7 +134,7 @@ function Blog() {
     const updateBlog = async (blogId) => {
         setLoading(true);
 
-        await axios.get(`https://my-brand-backend-vq8n.onrender.com/blog/byid/${blogId}`, {
+        await axios.get(`${import.meta.env.VITE_APP_BASE_URL_LOCAL}/blog/byid/${blogId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -135,7 +155,7 @@ function Blog() {
     const refreshTable = async () => {
         setLoading(true);
 
-        await axios.get('https://my-brand-backend-vq8n.onrender.com/blog/all', {
+        await axios.get(`${import.meta.env.VITE_APP_BASE_URL_LOCAL}/blog/all`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -167,7 +187,7 @@ function Blog() {
 
     const ViewBlog = async (blogId) => {
         setLoading(true);
-        await axios.get(`https://my-brand-backend-vq8n.onrender.com/blog/byid/${blogId}`, {
+        await axios.get(`${import.meta.env.VITE_APP_BASE_URL_LOCAL}/blog/byid/${blogId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -211,14 +231,14 @@ function Blog() {
                             <input type="text" name="blogId" value={blogFormData.blogId} hidden />
                         </div>
                         <div className="form-group">
-                            <input type="file" name="blogImage" onChange={handleFileChange} required />
+                            <input type="file" ref={fileInputRef} name="blogImage" onChange={handleFileChange} required />
                         </div>
                         <div className="form-group">
                             <textarea name="blogBody" value={blogFormData.blogBody} onChange={handleInputChange} placeholder="Blog Body.................." required></textarea>
                         </div>
                         <div className="form-group">
-                            <button type="button" onClick={addBlog}>Submit</button>
-                            <button type="reset">Reset</button>
+                            <button type="submit" onClick={addBlog}>Submit</button>
+                            <button type="reset" onClick={handleReset}>Reset</button>
                         </div>
                     </form>
                 </div>
