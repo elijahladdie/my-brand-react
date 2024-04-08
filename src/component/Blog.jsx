@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios'
 import { formatTimestamp, getInitials } from '../utils';
-import ProtectedRoute from './protectedRoutes';
 
 
 function Blog() {
