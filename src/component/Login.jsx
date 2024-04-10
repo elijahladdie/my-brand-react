@@ -6,14 +6,14 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-
+    const [notification, setNotification] = useState('');
 
     const handleLogin = async (event) => {
         event.preventDefault();
 
         setEmailError('');
         setPasswordError('');
-
+        setNotification('');
 
         if (!validateEmail(email)) {
             setEmailError('Please enter a valid email address.');
@@ -50,6 +50,16 @@ function LoginForm() {
         return re.test(String(email).toLowerCase());
     };
 
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+        if (emailError) setEmailError('');
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+        if (passwordError) setPasswordError('');
+    };
+
     return (
         <div id="skills" className="flex flex-col items-center hello-section justify-center h-screen">
             <h1 className="text-xl text-end">Login</h1>
@@ -63,7 +73,12 @@ function LoginForm() {
                             name="email"
                             placeholder="Email"
                             value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={handleEmailChange}
+                            onBlur={() => {
+                                if (!validateEmail(email)) {
+                                    setEmailError('Please enter a valid email address.');
+                                }
+                            }}
                             required
                         />
                         <label id="email-error" className="error-message">{emailError}</label>
@@ -76,7 +91,12 @@ function LoginForm() {
                             name="password"
                             placeholder="Password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={handlePasswordChange}
+                            onBlur={() => {
+                                if (password.length < 6) {
+                                    setPasswordError('Password must be at least 6 characters long.');
+                                }
+                            }}
                             required
                         />
                         <label id="password-error" className="error-message">{passwordError}</label>
@@ -85,6 +105,7 @@ function LoginForm() {
                         <button type="submit">Login</button>
                     </div>
                 </form>
+                {notification && <p>{notification}</p>}
             </div>
         </div>
     );
