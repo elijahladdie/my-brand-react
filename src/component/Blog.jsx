@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios'
 import { formatTimestamp, getInitials } from '../utils';
-import ProtectedRoute from './protectedRoutes';
+
 
 
 function Blog() {
@@ -255,14 +255,14 @@ function Blog() {
                 <div id="About" className="flex flex-col gap-8 pad-y justify-center items-center w-screen">
                     <form className="flex gap-8 flex-col bg-white pad w-100 rounded form-fit" onSubmit={addBlog}>
                         <div className="form-group">
-                            <input type="text" name="blogTitle" value={blogFormData.blogTitle} onChange={handleInputChange} placeholder="Blog title.................." required />
+                            <input type="text" name="blogTitle" value={blogFormData.blogTitle} onChange={handleInputChange} placeholder="Blog title ....... ..... ......" required />
                             <input type="text" name="blogId" value={blogFormData.blogId} hidden />
                         </div>
                         <div className="form-group">
                             <input type="file" ref={fileInputRef} name="blogImage" onChange={handleFileChange} required />
                         </div>
                         <div className="form-group">
-                            <textarea name="blogBody" value={blogFormData.blogBody} onChange={handleInputChange} placeholder="Blog Body.................." required></textarea>
+                            <textarea name="blogBody" value={blogFormData.blogBody} onChange={handleInputChange} placeholder="Blog Body ..... ...... ......." required></textarea>
                         </div>
                         <div className="form-group">
                             <button type="submit">Submit</button>
@@ -272,7 +272,7 @@ function Blog() {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table id="blogTable" className="table-auto w-full">
+                    <table id="blogTable" className="table-auto w-full w-100">
                         <thead>
                             <tr>
                                 <th className="px-4 py-2">Blog Title</th>
