@@ -270,10 +270,10 @@ table {
 .w-sm {
   width: fit-content;
 }
-
+/* 
 .w-full {
   width: 100%;
-}
+} */
 
 .w-100 {
   min-width: 40%;
@@ -758,7 +758,7 @@ img:hover{
 
   .w-100 {
       min-width: 80%;
-      margin: 0;
+      margin: 0 5%;
   }
 
   .text-xl {
