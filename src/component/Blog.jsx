@@ -314,9 +314,9 @@ function Blog() {
             {error && <p>Error: {error}</p>}
             {blog && (
                 <div className="popup">
-                    <div className="popup-content bg-black text-white pad rounded flex items-center flex-col">
+                    <div className="popup-content  bg-dark-gray text-white pad rounded flex items-center flex-col">
                         <span className="close close-button" onClick={closePopup}>&times;</span>
-                        <div className='flex justify-between '>
+                        <div className='flex justify-between w-grid '>
                             <h1 className="text-lg text-end pad">{blog.blogTitle}</h1>
                             <h1 className="text-lg text-end pad">Likes: {blog.likes}</h1>
                         </div>
@@ -328,8 +328,8 @@ function Blog() {
                             <div className="">
                                 <h2>Comments</h2>
                                 {blog.comments.map((comment, index) => (
-                                    <div className="comment-wrapper flex items-center gap-8 text-white" key={index}>
-                                        <div className="profile-text text-center flex items-center justify-center rounded" title={comment.name}>{getInitials(comment.name)}</div>
+                                    <div className="comment-wrapper flex items-center gap-8 text-white text-light-gray my-2" key={index}>
+                                        <div className="profile-text text-center flex items-center justify-center rounded pad" title={comment.name}>{getInitials(comment.name)}</div>
                                         <div className="comment-content flex flex-col">
                                             <span className="text-xs">{comment.name}</span>
                                             <p>{comment.comment}</p>
